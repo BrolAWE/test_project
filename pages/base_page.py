@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, TimeoutException
 import math
 
-from pages.locators import BasePageLocators
+from .locators import BasePageLocators
 
 
 class BasePage():
@@ -61,8 +61,23 @@ class BasePage():
         return True
 
     def go_to_login_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID)
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
 
     def should_be_login_link(self):
-        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Ссылка входа не была найдена"
+
+    def go_to_basket(self):
+        link = self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        link.click()
+
+    def should_not_be_products(self):
+        assert self.is_not_element_present(*BasePageLocators.BASKET_ITEMS), \
+            "Продукты есть, но их быть не должно"
+
+    def should_be_empty_text(self):
+        assert self.is_element_present(*BasePageLocators.EMPTY_TEXT), "Нет текста об отсутствии товара"
+
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
